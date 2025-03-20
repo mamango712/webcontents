@@ -4,15 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>과제</title>
+    <link rel="stylesheet" href="시맨틱태그.css">
 </head>
 <body>
+    <header>
     <h1>About me</h1>
     <hr>
     <p>안녕하십니까 올해 명지전문대를 입학한 25학번 새내기 마기찬입니다</p>
     <p>프론트엔드 혹은 백엔드 개발자가 되고싶어 컴공과에 들어오게 되었습니다</p>
+    <audio src="새+프로젝트.mp3" controls loop></audio>
     <br>
-
-    <h1>관심분야</h1>
+    </header>
+    <nav>
+        <h1>목차</h1>
+        <li><a href="#관심">관심분야</a></li>
+        <li><a href="#취미">취미활동</a></li>
+        <li><a href="#강의">강의시간표</a></li>
+        <br>
+    </nav>
+    <section>
+    <article id="분야">
+    <h1 id="관심">관심분야</h1>
 
     <hr>
         <ul>
@@ -41,29 +53,31 @@
             <br>
         </li>
     </ul>
-
-    <h1>취미활동</h1>
+</article>
+    <article id="활동">
+    <h1 id="취미">취미활동</h1>
 
     <hr>
 
     <table border="1">
         <thead> 
             <tr>
-                <th><img src="애플뮤직.jpeg" width="120" height="120"></th>
-                <th><img src="롤.jpeg" width="120" height="120"></th>
-                <th><img src="책.png" width="120" height="120"></th>
+                <th><a href="애플뮤직.jpeg" target="_blank"><img src="애플뮤직.jpeg" width="120" height="120"></a></th>
+                <th><a href="롤.jpeg" target="_blank"><img src="롤.jpeg" width="120" height="120"></a></th>
+                <th><a href="책.png" target="_blank"><img src="책.png" width="120" height="120"></a></th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td style="text-align: center;"><h2>음악듣기</h2></td>
+                <td style="text-align: center;"><h2>음악듣기</h2></tdx>
                 <td style="text-align: center;"><h2>게임하기</h2></td>
                 <td style="text-align: center;"><h2>독서하기</h2></td>
             </tr>
         </tbody>
     </table>
     <br>
-    <h1>강의 시간표 (2025년 1학기)</h1>
+    <article id="시간표">
+    <h1 id="강의">강의 시간표 (2025년 1학기)</h1>
     <hr>
     <table border="1">
         <thead>
@@ -151,5 +165,10 @@
             </tr>
         </tbody>
     </table>
+</article>
+</section>
+    <footer>
+        <h4>2025년 3월 18일 작성</h4>
+    </footer>
 </body>
 </html>
