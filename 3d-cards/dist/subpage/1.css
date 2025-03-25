@@ -1,0 +1,173 @@
+body{
+    position: fixed;
+}
+
+
+#box-wrap {
+    position: relative;
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+    padding-bottom: 100%;}
+
+#box-wrap .box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;}
+
+
+
+
+input[id="menuicon"] {display:none;}
+input[id="menuicon"] + label {display:block;margin:20px;width:40px;height:30px;position:relative;cursor:pointer;}
+input[id="menuicon"] + label span {display:block;position:absolute;width:100%;height:3px;border-radius:30px;background:#000;transition:all .35s;}
+input[id="menuicon"] + label span:nth-child(1) {top:0;}
+input[id="menuicon"] + label span:nth-child(2) {top:50%;transform:translateY(-50%);} 
+input[id="menuicon"] + label span:nth-child(3) {bottom:0;}
+input[id="menuicon"]:checked + label {z-index:2;}
+input[id="menuicon"]:checked + label span {background:#fff;}
+input[id="menuicon"]:checked + label span:nth-child(1) {top:50%;transform:translateY(-50%) rotate(45deg);}
+input[id="menuicon"]:checked + label span:nth-child(2) {opacity:0;}
+input[id="menuicon"]:checked + label span:nth-child(3) {bottom:50%;transform:translateY(50%) rotate(-45deg);}
+div[class="sidebar"] {width:5000px;height:8%;background:#222;position:fixed;top:-10%;left:100;z-index:1;transition:all .35s;}
+input[id="menuicon"]:checked + label + div {top: 0;}
+
+
+
+
+a{
+    text-decoration: none;
+    color: aliceblue;
+}
+.navbar{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    padding: 8px 12px;      /*너무 끝과끝씩 있어 가운데로 조금 모이게*/
+}
+
+
+
+.navbar__menu{
+    display: flex;
+    list-style: none;  /*lu태그의 붙는 .(점)을 없애줌*/
+    padding: 0px; /*메뉴를 중간으로*/
+    margin: 10px;
+    
+}
+
+.navbar__menu li{
+    padding:8px 120px; /*메뉴를 위로 8 옆으로 12 스페이스*/
+}
+
+.navbar__menu li:hover{ /*마우스를 호버링 하면 색 상자*/
+    background-color: rgb(23, 154, 154);  
+    border-radius: 10px;/*색 상자가 너무 각져있어 모서리 다듬어줌*/
+}
+
+
+
+ /* 슬라이드 Style */
+ .slidebox {max-width:1900px; margin:0 auto;}  /*전체 크기*/
+ .slidebox .slidelist {white-space:nowrap;font-size:0;overflow:hidden;}
+ .slidebox .slidelist .slideitem {position:relative;display:inline-block;vertical-align:middle;width:100%;transition:all 1s;}
+ .slidebox .slidelist .slideitem > a {display:block;width:auto;position:relative;}
+ .slidebox .slidelist .slideitem > a img {max-width:100%;}
+ 
+ 
+ [name="slide"] {display:none;}
+ #slide01:checked ~ .slidelist .slideitem {transform:translateX(0);animation:slide01 20s infinite;}
+ #slide02:checked ~ .slidelist .slideitem {transform:translateX(-100%);animation:slide02 20s infinite;}
+ 
+ @keyframes slide01 {
+     0% {left:0%;}
+     49% {left:0%;}
+     50% {left:-100%}
+     99% {left:-100%;}
+     100% {left:0;}
+ }
+ 
+ @keyframes slide02 {
+     0% {left:0%;}
+     49% {left:0%;}
+     50% {left:100;}
+     99% {left:100;}
+     100% {left:0%;}
+ }
+
+
+
+ /*옵션*/
+ .b1{
+    left:1100px;
+    top: -500px;
+    position: relative;
+
+
+    width: 200px;
+    height: 200px;
+    border: 1px solid black;
+
+    border-radius: 20px;
+    text-align: center;
+    line-height : 350px;
+}
+
+
+.b2{
+    left:1500px;
+    top: -703px;
+    position: relative;
+
+
+    width: 200px;
+    height: 200px;
+    border: 1px solid black;
+
+    border-radius: 20px;
+    text-align: center;
+    line-height : 350px;
+}
+
+.b3{
+    left:1500px;
+    top: -600px;
+    position: relative;
+
+
+    width: 200px;
+    height: 200px;
+    border: 1px solid black;
+
+    border-radius: 20px;
+    text-align: center;
+    line-height : 350px;
+}
+
+.b4{
+    left:1100px;
+    top: -800px;
+    position: relative;
+
+
+    width: 200px;
+    height: 200px;
+    border: 1px solid black;
+
+    border-radius: 20px;
+    text-align: center;
+    line-height : 350px;
+}
+/*호버*/
+.b1:hover, .b2:hover, .b3:hover, .b4:hover {
+    transform: scale(1.07); /* 마우스를 올리면 크기가 1.1배로 증가 */
+    transition: transform 0.3s ease; /* 부드럽게 변화하는 효과를 주기 위해 transition 추가 */
+}
+
+.listtext{
+    left: 100px;
+    height: 100px
+}
