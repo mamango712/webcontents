@@ -1,0 +1,32 @@
+.am{
+    text-align: center;
+    color: brown;
+}
+
+body{
+    background-color: aliceblue;
+}
+
+p{
+    font-size: 1em;
+    text-indent: 1em;
+    font-family: '휴먼편지체', sans-serif;
+}
+
+a{
+    text-decoration: none;
+}
+
+.mc{
+    border: 1px dotted;
+}
+
+.s {
+    text-shadow: 1px 1px 15px aqua;
+}
+
+footer{
+    font-family: '휴먼편지체', sans-serif;
+    border-radius: 10px;
+    background-color: orange;
+}
