@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Sleepkeeper - 취침시간 추천</title>
+    <script src="main.js"></script>
+    <style>
+      body {
+        background: #f7f6f3;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        font-family: "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo",
+          "Nanum Gothic", Arial, sans-serif;
+      }
+      header {
+        background: none;
+        padding: 2.5rem 0 1.2rem 0;
+        text-align: center;
+      }
+      .main-title {
+        font-size: 2.3rem;
+        font-weight: 700;
+        color: #a0855b;
+        letter-spacing: 0.08em;
+        margin-bottom: 0.2em;
+      }
+      nav {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+      nav a {
+        text-decoration: none;
+        color: #a0855b;
+        font-weight: 600;
+        font-size: 1.08rem;
+        padding: 0.3rem 0.7rem;
+        border-radius: 6px;
+        transition: background 0.2s, color 0.2s;
+      }
+      nav a.active,
+      nav a:hover,
+      nav a:focus {
+        background: #f5f1eb;
+        color: #7d6a4d;
+        outline: none;
+      }
+      main {
+        max-width: 680px;
+        margin: 0 auto 40px auto;
+        background: #fff;
+        border-radius: 14px;
+        border: 4px solid #e7e1d2;
+        box-shadow: 0 8px 24px rgba(160, 133, 91, 0.07);
+        padding: 2.2rem 2.5rem 2rem 2.5rem;
+      }
+      .section-title {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: #a0855b;
+        margin-bottom: 1.1rem;
+        letter-spacing: 0.04em;
+        text-align: left;
+      }
+      .desc {
+        color: #7d6a4d;
+        font-size: 1.05rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+      }
+      .time-input-group {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        margin-bottom: 1.3rem;
+        flex-wrap: wrap;
+      }
+      .time-input-group label {
+        font-size: 1.07rem;
+        color: #a0855b;
+        margin-right: 0.2rem;
+      }
+      .time-input-group select,
+      .time-input-group input {
+        padding: 0.35rem 0.7rem;
+        font-size: 1.07rem;
+        border-radius: 7px;
+        border: 1.5px solid #d2c1a0;
+        background: #f5f1eb;
+        color: #7d6a4d;
+        outline: none;
+        transition: border 0.2s;
+        width: auto;
+      }
+      .time-input-group input[type="number"] {
+        width: 3.2rem;
+        text-align: center;
+      }
+      .time-input-group button {
+        background: #a0855b;
+        color: #fff;
+        border: none;
+        border-radius: 7px;
+        font-size: 1.07rem;
+        padding: 0.5rem 1.3rem;
+        font-weight: 600;
+        margin-left: 0.7rem;
+        cursor: pointer;
+        transition: background 0.18s;
+      }
+      .time-input-group button:hover {
+        background: #7d6a4d;
+      }
+      .result-box {
+        background: #f5f1eb;
+        color: #7d6a4d;
+        border-radius: 8px;
+        padding: 1.1rem 1.2rem;
+        margin-bottom: 1.5rem;
+        font-size: 1.09rem;
+        min-height: 2.2em;
+        margin-top: 0.5rem;
+        border-left: 5px solid #d2c1a0;
+        word-break: keep-all;
+      }
+      footer {
+        text-align: center;
+        color: #a0855b;
+        font-size: 1rem;
+        padding: 1.8rem 0 1rem 0;
+        background: none;
+      }
+      @media (max-width: 700px) {
+        main {
+          padding: 1rem 0.3rem;
+        }
+        .main-title {
+          font-size: 1.3rem;
+        }
+        .section-title {
+          font-size: 1.05rem;
+        }
+        .time-input-group label {
+          font-size: 0.98rem;
+        }
+        .time-input-group button {
+          font-size: 0.98rem;
+        }
+      }
+      .info-card {
+        max-width: 700px;
+        margin: 2rem auto 1.5rem auto;
+        background: #fff;
+        border-radius: 12px;
+        border: 4px solid #e7e1d2;
+        box-shadow: 0 8px 24px rgba(160, 133, 91, 0.07);
+        padding: 2.2rem 2.5rem 2rem 2.5rem;
+        font-size: 1.09rem;
+        color: #7d6a4d;
+      }
+      .info-card h2 {
+        color: #a0855b;
+        font-size: 1.35rem;
+        font-weight: 700;
+        margin-bottom: 1.1rem;
+        letter-spacing: 0.04em;
+        text-align: left;
+      }
+      .info-card p {
+        margin-bottom: 0.6em;
+        line-height: 1.7;
+      }
+      body.dark-theme {
+        background: #232323;
+        color: #e7e1d2;
+      }
+      body.dark-theme main,
+      body.dark-theme .planner-container {
+        background: #232323;
+        color: #e7e1d2;
+        border-color: #4b3c23;
+      }
+      body.dark-theme header,
+      body.dark-theme nav,
+      body.dark-theme .main-title,
+      body.dark-theme .home-title,
+      body.dark-theme .section-title,
+      body.dark-theme .planner-title {
+        background: none;
+        color: #e7e1d2;
+      }
+      body.dark-theme nav a {
+        color: #e7e1d2;
+      }
+      body.dark-theme nav a.active,
+      body.dark-theme nav a:hover,
+      body.dark-theme nav a:focus {
+        background: #38312a;
+        color: #ffe6a7;
+      }
+      body.dark-theme .home-list a,
+      body.dark-theme .home-list a:visited {
+        color: #ffe6a7;
+      }
+      body.dark-theme main,
+      body.dark-theme .planner-container {
+        box-shadow: 0 8px 24px rgba(30, 30, 30, 0.25);
+      }
+      body.dark-theme input,
+      body.dark-theme textarea,
+      body.dark-theme select {
+        background: #38312a;
+        color: #ffe6a7;
+        border-color: #4b3c23;
+      }
+      body.dark-theme button,
+      body.dark-theme #theme-toggle {
+        background: #4b3c23 !important;
+        color: #ffe6a7 !important;
+      }
+      body.dark-theme .result-box,
+      body.dark-theme .side-box,
+      body.dark-theme .focus-section,
+      body.dark-theme th,
+      body.dark-theme td {
+        background: #232323 !important;
+        color: #ffe6a7 !important;
+        border-color: #4b3c23 !important;
+      }
+      body.dark-theme .container,
+      body.dark-theme .info-card {
+        background: #292929 !important;
+        color: #ffe6a7 !important;
+        border-color: #4b3c23 !important;
+        box-shadow: 0 8px 24px rgba(30, 30, 30, 0.13) !important;
+      }
+      body.dark-theme .info-card h2 {
+        color: #ffe6a7 !important;
+      }
+      body.dark-theme .info-card p {
+        color: #e7e1d2 !important;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="main-title">SleepKeeper</div>
+      <br />
+      <nav>
+        <a href="Home.html" class="nav-home">Home</a>
+        <a href="dayplanner.html" class="nav-day">DailyPlanner</a>
+        <a href="weekplanner.html" class="nav-week">WeeklyPlanner</a>
+        <a href="sleepTime.html" class="nav-sleep active">SleepKeeper</a>
+      </nav>
+    </header>
+    <main>
+      <section class="info-card">
+        <h2>Sleepkeeper에 오신 것을 환영합니다!</h2>
+        <p>
+          Sleepkeeper는 권장 수면시간을 알 수 있고, 수면 정보를 쉽게 확인할 수
+          있는 웹페이지입니다.
+        </p>
+        <p>최적의 기상 시간을 알 수 있습니다 :)</p>
+      </section>
+
+      <section class="info-card" id="information">
+        <h2>사람들의 평균 취침 시간</h2>
+        <p>사람들의 평균 취침 시간은 11시 30분입니다.</p>
+        <p>이 시간에 취침하는 것이 건강에 좋습니다.</p>
+        <p>
+          수면 시간은 개인의 생활 패턴에 따라 다를 수 있지만, 18세~64세의
+          사람들은 7~9시간의 수면이 권장됩니다.
+        </p>
+        <p>수면 시간은 개인의 건강과 웰빙에 중요한 영향을 미칩니다.</p>
+        <p>
+          수면 부족은 집중력 저하, 면역력 감소, 우울증 등의 문제를 일으킬 수
+          있습니다.
+        </p>
+        <p>따라서, 충분한 수면 시간을 확보하는 것이 중요합니다.</p>
+      </section>
+      <br />
+      <div class="section-title">언제 자면 언제 일어나야 할까?</div>
+      <div class="desc">
+        잠드는 시간을 입력하면, 권장 수면주기(90분) 기준으로 최적의 기상 시간을
+        알려줍니다.
+      </div>
+      <div class="time-input-group">
+        <select id="now-ampm">
+          <option value="AM">오전</option>
+          <option value="PM">오후</option>
+        </select>
+        <input type="number" id="now-hour" min="1" max="12" value="11" />
+        <label for="now-hour">시</label>
+        <input type="number" id="now-minute" min="0" max="59" value="0" />
+        <label for="now-minute">분</label>
+        <button id="calc-wake-btn">언제 일어나야 할까?</button>
+      </div>
+      <div class="result-box" id="wake-result"></div>
+
+      <div class="section-title" style="margin-top: 2.5rem">
+        언제 자야지 원하는 시간에 일어나기 좋을까?
+      </div>
+      <div class="desc">
+        기상 시간을 입력하면, 권장 수면주기 기준으로 언제 잠들면 좋은지
+        알려줍니다.
+      </div>
+      <div class="time-input-group">
+        <select id="ampm">
+          <option value="AM">오전</option>
+          <option value="PM">오후</option>
+        </select>
+        <input type="number" id="hour" min="1" max="12" value="7" />
+        <label for="hour">시</label>
+        <input type="number" id="minute" min="0" max="59" value="0" />
+        <label for="minute">분</label>
+        <button id="calc-bedtime-btn">언제 자야 할까?</button>
+      </div>
+      <div class="result-box" id="bedtime-result"></div>
+
+      <div class="section-title" style="margin-top: 2.5rem">
+        수면 시간 계산기
+      </div>
+      <div class="desc">지금 자면 언제 일어나야 개운할지 계산해드립니다.</div>
+      <button id="calc-sleep-btn" style="margin-bottom: 1.2rem">
+        지금 자면 최적 기상 시간 보기
+      </button>
+      <div class="result-box" id="sleep-result"></div>
+    </main>
+    <footer>
+      연락처: akrlcks06@gmail.com, tea838391@gmail.com
+      <br />
+      <br />
+      © 2025 I들
+    </footer>
+    <script>
+      // ======= 슬립키퍼(SLEEPKEEPER) =======
+      document.addEventListener("DOMContentLoaded", () => {
+        // 슬립키퍼 - "언제 자야 할까?"
+        const bedtimeBtn = document.getElementById("calc-bedtime-btn");
+        if (bedtimeBtn) {
+          bedtimeBtn.addEventListener("click", function () {
+            const ampm = document.getElementById("ampm").value;
+            let hour = parseInt(document.getElementById("hour").value, 10);
+            let minute = parseInt(document.getElementById("minute").value, 10);
+            const resultDiv = document.getElementById("bedtime-result");
+            if (isNaN(hour) || hour < 1 || hour > 12) {
+              resultDiv.innerHTML =
+                '<span style="color:red;">시(hour)는 1~12 사이로 입력하세요.</span>';
+              return;
+            }
+            if (isNaN(minute) || minute < 0 || minute > 59) {
+              resultDiv.innerHTML =
+                '<span style="color:red;">분(minute)은 0~59 사이로 입력하세요.</span>';
+              return;
+            }
+            let wakeHour = hour % 12;
+            if (ampm === "PM") wakeHour += 12;
+            const wake = new Date();
+            wake.setHours(wakeHour, minute, 0, 0);
+            let result = "";
+            [9, 8, 7].forEach((cycle) => {
+              const bed = new Date(wake.getTime() - cycle * 60 * 60 * 1000);
+              let h = bed.getHours();
+              let m = bed.getMinutes();
+              let ap = h >= 12 ? "오후" : "오전";
+              let displayHour = h % 12;
+              if (displayHour === 0) displayHour = 12;
+              result += `<div>${cycle}시간 수면: <strong>${ap} ${displayHour}시 ${m
+                .toString()
+                .padStart(2, "0")}분</strong></div>`;
+            });
+            resultDiv.innerHTML = result;
+          });
+        }
+
+        // 슬립키퍼 - "지금 자면 최적 기상 시간 보기"
+        const sleepBtn = document.getElementById("calc-sleep-btn");
+        if (sleepBtn) {
+          sleepBtn.addEventListener("click", function () {
+            const now = new Date();
+            let result = "";
+            [7, 8, 9].forEach((cycle) => {
+              const wake = new Date(now.getTime() + cycle * 60 * 60 * 1000);
+              let h = wake.getHours();
+              let m = wake.getMinutes();
+              let ap = h >= 12 ? "오후" : "오전";
+              let displayHour = h % 12;
+              if (displayHour === 0) displayHour = 12;
+              result += `<div>${cycle}시간 후: <strong>${ap} ${displayHour}시 ${m
+                .toString()
+                .padStart(2, "0")}분</strong></div>`;
+            });
+            document.getElementById("sleep-result").innerHTML = result;
+          });
+        }
+
+        // 슬립키퍼 - "지금 자면 언제 일어나야 할까?"
+        const wakeBtn = document.getElementById("calc-wake-btn");
+        if (wakeBtn) {
+          wakeBtn.addEventListener("click", function () {
+            const ampm = document.getElementById("now-ampm").value;
+            let hour = parseInt(document.getElementById("now-hour").value, 10);
+            let minute = parseInt(
+              document.getElementById("now-minute").value,
+              10
+            );
+            const resultDiv = document.getElementById("wake-result");
+            if (isNaN(hour) || hour < 1 || hour > 12) {
+              resultDiv.innerHTML =
+                '<span style="color:red;">시(hour)는 1~12 사이로 입력하세요.</span>';
+              return;
+            }
+            if (isNaN(minute) || minute < 0 || minute > 59) {
+              resultDiv.innerHTML =
+                '<span style="color:red;">분(minute)은 0~59 사이로 입력하세요.</span>';
+              return;
+            }
+            let nowHour = hour % 12;
+            if (ampm === "PM") nowHour += 12;
+            const now = new Date();
+            now.setHours(nowHour, minute, 0, 0);
+            let result = "";
+            [7, 8, 9].forEach((cycle) => {
+              const wake = new Date(now.getTime() + cycle * 60 * 60 * 1000);
+              let h = wake.getHours();
+              let m = wake.getMinutes();
+              let ap = h >= 12 ? "오후" : "오전";
+              let displayHour = h % 12;
+              if (displayHour === 0) displayHour = 12;
+              result += `<div>${cycle}시간 후: <strong>${ap} ${displayHour}시 ${m
+                .toString()
+                .padStart(2, "0")}분</strong></div>`;
+            });
+            resultDiv.innerHTML = result;
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

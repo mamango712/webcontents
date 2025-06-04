@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>데일리 플래너</title>
+    <script src="main.js"></script>
+    <style>
+      header {
+        background: none;
+        padding: 2.5rem 0 1.2rem 0;
+        text-align: center;
+      }
+      .main-title {
+        display: flex;
+        justify-content: center;
+        font-size: 2.3rem;
+        font-weight: 700;
+        color: #a0855b;
+        letter-spacing: 0.08em;
+        margin-bottom: 0.2em;
+      }
+      nav {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+      nav a {
+        text-decoration: none;
+        color: #a0855b;
+        font-weight: 600;
+        font-size: 1.08rem;
+        padding: 0.3rem 0.7rem;
+        border-radius: 6px;
+        transition: background 0.2s, color 0.2s;
+      }
+      nav a.active,
+      nav a:hover,
+      nav a:focus {
+        background: #f5f1eb;
+        color: #7d6a4d;
+        outline: none;
+      }
+      body {
+        background: #f7f6f3;
+        font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+        margin: 0;
+        padding: 0;
+        font-family: "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo",
+          "Nanum Gothic", Arial, sans-serif;
+      }
+      .container {
+        max-width: 900px;
+        margin: 40px auto 0 auto;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.07);
+        padding: 40px 40px 30px 40px;
+        position: relative;
+      }
+      .title {
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        color: #a0855b;
+        margin-bottom: 30px;
+      }
+      .date-row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-size: 1.1rem;
+        margin-bottom: 18px;
+        color: #7d6a4d;
+      }
+      .date-row input[type="date"] {
+        font-size: 1.1rem;
+        border: none;
+        border-bottom: 1px solid #bdbdbd;
+        background: transparent;
+        padding: 2px 6px;
+        outline: none;
+        color: #7d6a4d;
+      }
+      .focus-section {
+        background: #f5f1eb;
+        border-radius: 6px;
+        padding: 16px 18px;
+        margin-bottom: 26px;
+        font-size: 1.08rem;
+        color: #7d6a4d;
+        border-left: 5px solid #d2c1a0;
+      }
+      .focus-section textarea {
+        width: 100%;
+        border: none;
+        background: transparent;
+        font-size: 1.08rem;
+        resize: none;
+        outline: none;
+        color: #7d6a4d;
+        margin-top: 5px;
+        font-family: inherit;
+        min-height: 32px;
+      }
+      .main-grid {
+        display: flex;
+        gap: 30px;
+        margin-bottom: 24px;
+      }
+      .time-table {
+        flex: 2;
+      }
+      .time-table table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        font-size: 1.05rem;
+      }
+      .time-table th,
+      .time-table td {
+        border: 1px solid #bdbdbd;
+        padding: 6px 8px;
+        text-align: left;
+      }
+      .time-table th {
+        background: #f5f1eb;
+        color: #a0855b;
+        font-weight: 600;
+        font-size: 1.08rem;
+      }
+      .time-table input {
+        width: 100%;
+        border: none;
+        background: transparent;
+        font-size: 1.05rem;
+        padding: 4px 2px;
+        font-family: inherit;
+        outline: none;
+        color: #6d5c3e;
+      }
+      .side-section {
+        flex: 1.2;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .side-box {
+        background: #f5f1eb;
+        border-radius: 6px;
+        padding: 14px 14px 10px 14px;
+        margin-bottom: 0;
+        border-left: 5px solid #d2c1a0;
+      }
+      .side-title {
+        font-size: 1.07rem;
+        font-weight: 600;
+        color: #a0855b;
+        margin-bottom: 8px;
+        letter-spacing: 0.01em;
+      }
+      .side-box ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .side-box li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 7px;
+      }
+      .side-box input[type="text"] {
+        flex: 1;
+        border: none;
+        background: transparent;
+        font-size: 1.02rem;
+        padding: 2px 6px;
+        outline: none;
+        color: #6d5c3e;
+      }
+      .side-box input[type="checkbox"] {
+        margin-right: 8px;
+        accent-color: #a0855b;
+        width: 17px;
+        height: 17px;
+      }
+      .gratitude-box input[type="text"] {
+        width: 100%;
+        border: none;
+        background: transparent;
+        font-size: 1.02rem;
+        padding: 2px 6px;
+        outline: none;
+        color: #6d5c3e;
+        margin-bottom: 6px;
+      }
+      .btns {
+        text-align: center;
+        margin-top: 22px;
+      }
+      button {
+        background: #a0855b;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        font-size: 1.08rem;
+        padding: 10px 28px;
+        margin: 0 8px;
+        cursor: pointer;
+        transition: background 0.2s;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+      button:hover {
+        background: #7d6a4d;
+      }
+      footer {
+        text-align: center;
+        color: #a0855b;
+        font-size: 1rem;
+        padding: 1.8rem 0 1rem 0;
+        background: none;
+      }
+      @media (max-width: 900px) {
+        .container {
+          max-width: 100%;
+          padding: 8px;
+        }
+        .main-grid {
+          flex-direction: column;
+          gap: 10px;
+        }
+        .title {
+          font-size: 1.5rem;
+        }
+      }
+      body.dark-theme {
+        background: #232323;
+        color: #e7e1d2;
+      }
+      body.dark-theme main,
+      body.dark-theme .planner-container {
+        background: #232323;
+        color: #e7e1d2;
+        border-color: #4b3c23;
+      }
+      body.dark-theme header,
+      body.dark-theme nav,
+      body.dark-theme .main-title,
+      body.dark-theme .home-title,
+      body.dark-theme .section-title,
+      body.dark-theme .planner-title {
+        background: none;
+        color: #e7e1d2;
+      }
+      body.dark-theme nav a {
+        color: #e7e1d2;
+      }
+      body.dark-theme nav a.active,
+      body.dark-theme nav a:hover,
+      body.dark-theme nav a:focus {
+        background: #38312a;
+        color: #ffe6a7;
+      }
+      body.dark-theme .home-list a,
+      body.dark-theme .home-list a:visited {
+        color: #ffe6a7;
+      }
+      body.dark-theme main,
+      a body.dark-theme .planner-container {
+        box-shadow: 0 8px 24px rgba(30, 30, 30, 0.25);
+      }
+      body.dark-theme input,
+      body.dark-theme textarea,
+      body.dark-theme select {
+        background: #38312a;
+        color: #ffe6a7;
+        border-color: #4b3c23;
+      }
+      body.dark-theme button,
+      body.dark-theme #theme-toggle {
+        background: #4b3c23 !important;
+        color: #ffe6a7 !important;
+      }
+      body.dark-theme .result-box,
+      body.dark-theme .side-box,
+      body.dark-theme .focus-section,
+      body.dark-theme th,
+      body.dark-theme td {
+        background: #232323 !important;
+        color: #ffe6a7 !important;
+        border-color: #4b3c23 !important;
+      }
+      body.dark-theme .container,
+      body.dark-theme .info-card {
+        background: #292929 !important;
+        color: #ffe6a7 !important;
+        border-color: #4b3c23 !important;
+        box-shadow: 0 8px 24px rgba(30, 30, 30, 0.13) !important;
+      }
+      body.dark-theme .info-card h2 {
+        color: #ffe6a7 !important;
+      }
+      body.dark-theme .info-card p {
+        color: #e7e1d2 !important;
+      }
+    </style>
+  </head>
+  <header>
+    <div class="main-title">DailyPlanner</div>
+    <br />
+    <nav>
+      <a href="Home.html" class="nav-home">Home</a>
+      <a href="dayplanner.html" class="nav-day active">DailyPlanner</a>
+      <a href="weekplanner.html" class="nav-week">WeeklyPlanner</a>
+      <a href="sleepTime.html" class="nav-sleep">SleepKeeper</a>
+    </nav>
+  </header>
+  <body>
+    <div class="container">
+      <div class="title">데일리 플래너</div>
+      <div class="date-row">
+        <span>날짜</span>
+        <input type="date" id="planDate" />
+      </div>
+      <div class="focus-section">
+        <div>오늘의 다짐 및 가장 중요한 일은?</div>
+        <textarea
+          id="focus"
+          placeholder="오늘의 목표나 다짐을 적어보세요"
+        ></textarea>
+      </div>
+      <div class="main-grid">
+        <div class="time-table">
+          <table>
+            <tr>
+              <th style="width: 80px">시간</th>
+              <th>계획 및 일정</th>
+            </tr>
+            <tbody id="timeRows"></tbody>
+          </table>
+        </div>
+        <div class="side-section">
+          <div class="side-box">
+            <div class="side-title">가장 먼저 해야할 일 3가지</div>
+            <ul id="top3List">
+              <li><input type="text" placeholder="1." id="top1" /></li>
+              <li><input type="text" placeholder="2." id="top2" /></li>
+              <li><input type="text" placeholder="3." id="top3" /></li>
+            </ul>
+          </div>
+          <div class="side-box">
+            <div class="side-title">꼭 해야 할일 목록</div>
+            <ul id="todoList">
+              <!-- 10개 체크박스 -->
+            </ul>
+          </div>
+          <div class="side-box gratitude-box">
+            <div class="side-title">오늘 잘한 일 3가지</div>
+            <input type="text" placeholder="1." id="grateful1" />
+            <input type="text" placeholder="2." id="grateful2" />
+            <input type="text" placeholder="3." id="grateful3" />
+          </div>
+        </div>
+      </div>
+      <div class="btns">
+        <button type="button" onclick="savePlan()">저장</button>
+        <button type="button" onclick="loadPlan()">불러오기</button>
+        <button type="button" onclick="clearPlan()">초기화</button>
+      </div>
+    </div>
+    <br />
+    <footer>
+      연락처: akrlcks06@gmail.com, tea838391@gmail.com
+      <br />
+      <br />
+      © 2025 I들
+    </footer>
+    <script>
+      // 시간대 자동 생성
+      const startHour = 6,
+        endHour = 22;
+      const timeRows = document.getElementById("timeRows");
+      for (let h = startHour; h < endHour; h++) {
+        for (let m = 0; m < 60; m += 30) {
+          const row = document.createElement("tr");
+          const timeStr = `${h % 12 || 12}:${m === 0 ? "00" : "30"} ${
+            h < 12 ? "am" : "pm"
+          }`;
+          row.innerHTML = `
+          <td>${timeStr}</td>
+          <td><input type="text" id="plan_${h}_${m}" /></td>
+        `;
+          timeRows.appendChild(row);
+        }
+      }
+
+      // 할 일 목록 10개 체크박스
+      const todoList = document.getElementById("todoList");
+      for (let i = 1; i <= 10; i++) {
+        const li = document.createElement("li");
+        li.innerHTML = `<input type="checkbox" id="todo_chk${i}"><input type="text" placeholder="${i}." id="todo${i}">`;
+        todoList.appendChild(li);
+      }
+
+      // 저장/불러오기/초기화
+      function getPlanKey() {
+        const date = document.getElementById("planDate").value || "default";
+        return "dailyPlan_" + date;
+      }
+      function savePlan() {
+        const data = {};
+        data.date = document.getElementById("planDate").value;
+        data.focus = document.getElementById("focus").value;
+        for (let h = startHour; h < endHour; h++) {
+          for (let m = 0; m < 60; m += 30) {
+            data[`plan_${h}_${m}`] = document.getElementById(
+              `plan_${h}_${m}`
+            ).value;
+          }
+        }
+        for (let i = 1; i <= 3; i++)
+          data[`top${i}`] = document.getElementById(`top${i}`).value;
+        for (let i = 1; i <= 10; i++) {
+          data[`todo${i}`] = document.getElementById(`todo${i}`).value;
+          data[`todo_chk${i}`] = document.getElementById(
+            `todo_chk${i}`
+          ).checked;
+        }
+        for (let i = 1; i <= 3; i++)
+          data[`grateful${i}`] = document.getElementById(`grateful${i}`).value;
+        localStorage.setItem(getPlanKey(), JSON.stringify(data));
+        alert("저장되었습니다!");
+      }
+      function loadPlan() {
+        const data = localStorage.getItem(getPlanKey());
+        if (!data) {
+          alert("저장된 데이터가 없습니다.");
+          return;
+        }
+        const obj = JSON.parse(data);
+        document.getElementById("planDate").value = obj.date || "";
+        document.getElementById("focus").value = obj.focus || "";
+        for (let h = startHour; h < endHour; h++) {
+          for (let m = 0; m < 60; m += 30) {
+            document.getElementById(`plan_${h}_${m}`).value =
+              obj[`plan_${h}_${m}`] || "";
+          }
+        }
+        for (let i = 1; i <= 3; i++)
+          document.getElementById(`top${i}`).value = obj[`top${i}`] || "";
+        for (let i = 1; i <= 10; i++) {
+          document.getElementById(`todo${i}`).value = obj[`todo${i}`] || "";
+          document.getElementById(`todo_chk${i}`).checked =
+            !!obj[`todo_chk${i}`];
+        }
+        for (let i = 1; i <= 3; i++)
+          document.getElementById(`grateful${i}`).value =
+            obj[`grateful${i}`] || "";
+        alert("불러왔습니다!");
+      }
+      function clearPlan() {
+        if (confirm("모든 내용을 삭제하시겠습니까?")) {
+          document.getElementById("focus").value = "";
+          for (let h = startHour; h < endHour; h++) {
+            for (let m = 0; m < 60; m += 30) {
+              document.getElementById(`plan_${h}_${m}`).value = "";
+            }
+          }
+          for (let i = 1; i <= 3; i++)
+            document.getElementById(`top${i}`).value = "";
+          for (let i = 1; i <= 10; i++) {
+            document.getElementById(`todo${i}`).value = "";
+            document.getElementById(`todo_chk${i}`).checked = false;
+          }
+          for (let i = 1; i <= 3; i++)
+            document.getElementById(`grateful${i}`).value = "";
+        }
+      }
+      // 오늘 날짜 자동 입력
+      window.onload = function () {
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = ("0" + (today.getMonth() + 1)).slice(-2);
+        const dd = ("0" + today.getDate()).slice(-2);
+        document.getElementById("planDate").value = `${yyyy}-${mm}-${dd}`;
+      };
+    </script>
+  </body>
+</html>
