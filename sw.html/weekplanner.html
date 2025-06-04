@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>주간 플래너</title>
+    <script src="main.js"></script>
+    <style>
+      header {
+        background: none;
+        padding: 2.5rem 0 1.2rem 0;
+        text-align: center;
+      }
+      .main-title {
+        display: flex;
+        justify-content: center;
+        font-size: 2.3rem;
+        font-weight: 700;
+        color: #a0855b;
+        letter-spacing: 0.08em;
+        margin-bottom: 0.2em;
+      }
+      nav {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+      nav a {
+        text-decoration: none;
+        color: #a0855b;
+        font-weight: 600;
+        font-size: 1.08rem;
+        padding: 0.3rem 0.7rem;
+        border-radius: 6px;
+        transition: background 0.2s, color 0.2s;
+      }
+      nav a.active,
+      nav a:hover,
+      nav a:focus {
+        background: #f5f1eb;
+        color: #7d6a4d;
+        outline: none;
+      }
+      body {
+        background: #f7f6f3;
+        margin: 0;
+        padding: 0;
+        font-family: "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo",
+          "Nanum Gothic", Arial, sans-serif;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 40px auto;
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.07);
+        padding: 40px 40px 30px 40px;
+        position: relative;
+      }
+      .title {
+        text-align: center;
+        font-size: 2.8rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        color: #a0855b;
+        margin-bottom: 30px;
+      }
+      .date-row {
+        text-align: right;
+        color: #a0855b;
+        font-size: 1.1rem;
+        margin-bottom: 16px;
+      }
+      .focus-section {
+        background: #f5f1eb;
+        border-radius: 7px;
+        padding: 16px 18px 10px 18px;
+        margin-bottom: 28px;
+        font-size: 1.08rem;
+        color: #7d6a4d;
+        border-left: 5px solid #d2c1a0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .focus-section label {
+        font-weight: 600;
+        margin-right: 10px;
+        min-width: 220px;
+      }
+      .focus-section textarea {
+        width: 100%;
+        border: none;
+        background: transparent;
+        font-size: 1.08rem;
+        resize: none;
+        outline: none;
+        color: #7d6a4d;
+        font-family: inherit;
+        min-height: 32px;
+      }
+      .main-grid {
+        display: grid;
+        grid-template-columns: 1.7fr 1fr;
+        gap: 36px;
+        margin-bottom: 24px;
+      }
+      .week-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        font-size: 1.05rem;
+        margin-bottom: 0;
+      }
+      .week-table th,
+      .week-table td {
+        border: 1px solid #bdbdbd;
+        text-align: center;
+        padding: 0;
+      }
+      .week-table th {
+        background: #f5f1eb;
+        color: #a0855b;
+        font-weight: 600;
+        font-size: 1.08rem;
+        height: 44px;
+      }
+      .week-table td {
+        height: 70px;
+        background: #fff;
+      }
+      .week-table textarea {
+        width: 99%;
+        height: 66px;
+        border: none;
+        background: transparent;
+        font-size: 1.05rem;
+        resize: none;
+        outline: none;
+        color: #6d5c3e;
+        font-family: inherit;
+        padding: 6px 8px;
+        box-sizing: border-box;
+      }
+      .side-section {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .side-box {
+        background: #f5f1eb;
+        border-radius: 7px;
+        padding: 14px 14px 10px 14px;
+        border-left: 5px solid #d2c1a0;
+      }
+      .side-title {
+        font-size: 1.07rem;
+        font-weight: 600;
+        color: #a0855b;
+        margin-bottom: 8px;
+        letter-spacing: 0.01em;
+      }
+      .side-box ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .side-box li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 7px;
+      }
+      .side-box input[type="text"] {
+        flex: 1;
+        border: none;
+        background: transparent;
+        font-size: 1.02rem;
+        padding: 2px 6px;
+        outline: none;
+        color: #6d5c3e;
+      }
+      .side-box input[type="checkbox"] {
+        margin-right: 8px;
+        accent-color: #a0855b;
+        width: 17px;
+        height: 17px;
+      }
+      .gratitude-box input[type="text"] {
+        width: 100%;
+        border: none;
+        background: transparent;
+        font-size: 1.02rem;
+        padding: 2px 6px;
+        outline: none;
+        color: #6d5c3e;
+        margin-bottom: 6px;
+      }
+      .btns {
+        text-align: center;
+        margin-top: 22px;
+      }
+      button {
+        background: #a0855b;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        font-size: 1.08rem;
+        padding: 10px 28px;
+        margin: 0 8px;
+        cursor: pointer;
+        transition: background 0.2s;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+      footer {
+        text-align: center;
+        color: #a0855b;
+        font-size: 1rem;
+        padding: 1.8rem 0 1rem 0;
+        background: none;
+      }
+      button:hover {
+        background: #7d6a4d;
+      }
+      @media (max-width: 900px) {
+        .container {
+          max-width: 100%;
+          padding: 8px;
+        }
+        .main-grid {
+          grid-template-columns: 1fr;
+          gap: 10px;
+        }
+        .title {
+          font-size: 1.5rem;
+        }
+        .week-table th,
+        .week-table td {
+          font-size: 0.95rem;
+        }
+      }
+      body.dark-theme {
+        background: #232323;
+        color: #e7e1d2;
+      }
+      body.dark-theme main,
+      body.dark-theme .planner-container {
+        background: #232323;
+        color: #e7e1d2;
+        border-color: #4b3c23;
+      }
+      body.dark-theme header,
+      body.dark-theme nav,
+      body.dark-theme .main-title,
+      body.dark-theme .home-title,
+      body.dark-theme .section-title,
+      body.dark-theme .planner-title {
+        background: none;
+        color: #e7e1d2;
+      }
+      body.dark-theme nav a {
+        color: #e7e1d2;
+      }
+      body.dark-theme nav a.active,
+      body.dark-theme nav a:hover,
+      body.dark-theme nav a:focus {
+        background: #38312a;
+        color: #ffe6a7;
+      }
+      body.dark-theme .home-list a,
+      body.dark-theme .home-list a:visited {
+        color: #ffe6a7;
+      }
+      body.dark-theme main,
+      body.dark-theme .planner-container {
+        box-shadow: 0 8px 24px rgba(30, 30, 30, 0.25);
+      }
+      body.dark-theme input,
+      body.dark-theme textarea,
+      body.dark-theme select {
+        background: #38312a;
+        color: #ffe6a7;
+        border-color: #4b3c23;
+      }
+      body.dark-theme button,
+      body.dark-theme #theme-toggle {
+        background: #4b3c23 !important;
+        color: #ffe6a7 !important;
+      }
+      body.dark-theme .result-box,
+      body.dark-theme .side-box,
+      body.dark-theme .focus-section,
+      body.dark-theme th,
+      body.dark-theme td {
+        background: #232323 !important;
+        color: #ffe6a7 !important;
+        border-color: #4b3c23 !important;
+      }
+      body.dark-theme .container,
+      body.dark-theme .info-card {
+        background: #292929 !important;
+        color: #ffe6a7 !important;
+        border-color: #4b3c23 !important;
+        box-shadow: 0 8px 24px rgba(30, 30, 30, 0.13) !important;
+      }
+      body.dark-theme .info-card h2 {
+        color: #ffe6a7 !important;
+      }
+      body.dark-theme .info-card p {
+        color: #e7e1d2 !important;
+      }
+    </style>
+  </head>
+  <header>
+    <div class="main-title">WeeklyPlanner</div>
+    <br />
+    <nav>
+      <a href="Home.html" class="nav-home">Home</a>
+      <a href="dayplanner.html" class="nav-day">DailyPlanner</a>
+      <a href="weekplanner.html" class="nav-week active">WeeklyPlanner</a>
+      <a href="sleepTime.html" class="nav-sleep">SleepKeeper</a>
+    </nav>
+  </header>
+  <body>
+    <div class="container">
+      <div class="title">주간 플래너</div>
+      <div class="date-row">
+        <span id="weekRange"></span>
+        <input type="week" id="weekInput" style="margin-left: 20px" />
+      </div>
+      <div class="focus-section">
+        <label for="focus">이번 주의 다짐이나 목표 :</label>
+        <textarea
+          id="focus"
+          placeholder="이번 주의 목표나 다짐을 적어보세요"
+        ></textarea>
+      </div>
+      <div class="main-grid">
+        <div>
+          <table class="week-table">
+            <tr>
+              <th>요일</th>
+              <th>계획 및 일정</th>
+            </tr>
+            <tbody id="weekRows"></tbody>
+          </table>
+        </div>
+        <div class="side-section">
+          <div class="side-box">
+            <div class="side-title">가장 먼저 해야할 일 3가지</div>
+            <ul id="top3List">
+              <li><input type="text" placeholder="1." id="top1" /></li>
+              <li><input type="text" placeholder="2." id="top2" /></li>
+              <li><input type="text" placeholder="3." id="top3" /></li>
+            </ul>
+          </div>
+          <div class="side-box">
+            <div class="side-title">꼭 해야 할일 목록</div>
+            <ul id="todoList"></ul>
+          </div>
+          <div class="side-box gratitude-box">
+            <div class="side-title">이번 주 감사한 일 3가지</div>
+            <input type="text" placeholder="1." id="grateful1" />
+            <input type="text" placeholder="2." id="grateful2" />
+            <input type="text" placeholder="3." id="grateful3" />
+          </div>
+        </div>
+      </div>
+      <div class="btns">
+        <button type="button" onclick="savePlan()">저장</button>
+        <button type="button" onclick="loadPlan()">불러오기</button>
+        <button type="button" onclick="clearPlan()">초기화</button>
+      </div>
+    </div>
+    <footer>
+      연락처: akrlcks06@gmail.com, tea838391@gmail.com
+      <br />
+      <br />
+      © 2025 I들
+    </footer>
+    <script>
+      // 요일명
+      const days = ["월", "화", "수", "목", "금", "토", "일"];
+      const weekRows = document.getElementById("weekRows");
+      for (let i = 0; i < 7; i++) {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+        <td style="font-weight:600; color:#a0855b;">${days[i]}</td>
+        <td><textarea id="plan_${i}"></textarea></td>
+      `;
+        weekRows.appendChild(row);
+      }
+
+      // 할 일 목록 10개 체크박스
+      const todoList = document.getElementById("todoList");
+      for (let i = 1; i <= 10; i++) {
+        const li = document.createElement("li");
+        li.innerHTML = `<input type="checkbox" id="todo_chk${i}"><input type="text" placeholder="${i}." id="todo${i}">`;
+        todoList.appendChild(li);
+      }
+
+      // weekRange 표시
+      function setWeekRange() {
+        const weekInput = document.getElementById("weekInput");
+        const weekRange = document.getElementById("weekRange");
+        if (!weekInput.value) {
+          weekRange.textContent = "";
+          return;
+        }
+        const [year, week] = weekInput.value.split("-W");
+        const firstDay = getDateOfISOWeek(week, year);
+        const lastDay = new Date(firstDay);
+        lastDay.setDate(firstDay.getDate() + 6);
+        weekRange.textContent = `${year}년 ${
+          firstDay.getMonth() + 1
+        }월 ${firstDay.getDate()}일 ~ ${
+          lastDay.getMonth() + 1
+        }월 ${lastDay.getDate()}일`;
+      }
+      function getDateOfISOWeek(w, y) {
+        const simple = new Date(y, 0, 1 + (w - 1) * 7);
+        const dow = simple.getDay();
+        const ISOweekStart = simple;
+        if (dow <= 4)
+          ISOweekStart.setDate(simple.getDate() - simple.getDay() + 1);
+        else ISOweekStart.setDate(simple.getDate() + 8 - simple.getDay());
+        return ISOweekStart;
+      }
+      document
+        .getElementById("weekInput")
+        .addEventListener("change", setWeekRange);
+
+      // 저장/불러오기/초기화
+      function getPlanKey() {
+        const week = document.getElementById("weekInput").value || "default";
+        return "weeklyPlan_" + week;
+      }
+      function savePlan() {
+        const data = {};
+        data.week = document.getElementById("weekInput").value;
+        data.focus = document.getElementById("focus").value;
+        for (let i = 0; i < 7; i++)
+          data[`plan_${i}`] = document.getElementById(`plan_${i}`).value;
+        for (let i = 1; i <= 3; i++)
+          data[`top${i}`] = document.getElementById(`top${i}`).value;
+        for (let i = 1; i <= 10; i++) {
+          data[`todo${i}`] = document.getElementById(`todo${i}`).value;
+          data[`todo_chk${i}`] = document.getElementById(
+            `todo_chk${i}`
+          ).checked;
+        }
+        for (let i = 1; i <= 3; i++)
+          data[`grateful${i}`] = document.getElementById(`grateful${i}`).value;
+        localStorage.setItem(getPlanKey(), JSON.stringify(data));
+        alert("저장되었습니다!");
+      }
+      function loadPlan() {
+        const data = localStorage.getItem(getPlanKey());
+        if (!data) {
+          alert("저장된 데이터가 없습니다.");
+          return;
+        }
+        const obj = JSON.parse(data);
+        document.getElementById("weekInput").value = obj.week || "";
+        setWeekRange();
+        document.getElementById("focus").value = obj.focus || "";
+        for (let i = 0; i < 7; i++)
+          document.getElementById(`plan_${i}`).value = obj[`plan_${i}`] || "";
+        for (let i = 1; i <= 3; i++)
+          document.getElementById(`top${i}`).value = obj[`top${i}`] || "";
+        for (let i = 1; i <= 10; i++) {
+          document.getElementById(`todo${i}`).value = obj[`todo${i}`] || "";
+          document.getElementById(`todo_chk${i}`).checked =
+            !!obj[`todo_chk${i}`];
+        }
+        for (let i = 1; i <= 3; i++)
+          document.getElementById(`grateful${i}`).value =
+            obj[`grateful${i}`] || "";
+        alert("불러왔습니다!");
+      }
+      function clearPlan() {
+        if (confirm("모든 내용을 삭제하시겠습니까?")) {
+          document.getElementById("focus").value = "";
+          for (let i = 0; i < 7; i++)
+            document.getElementById(`plan_${i}`).value = "";
+          for (let i = 1; i <= 3; i++)
+            document.getElementById(`top${i}`).value = "";
+          for (let i = 1; i <= 10; i++) {
+            document.getElementById(`todo${i}`).value = "";
+            document.getElementById(`todo_chk${i}`).checked = false;
+          }
+          for (let i = 1; i <= 3; i++)
+            document.getElementById(`grateful${i}`).value = "";
+        }
+      }
+      // 오늘이 속한 주 자동 선택
+      window.onload = function () {
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const firstJan = new Date(yyyy, 0, 1);
+        const weekNum = Math.ceil(
+          ((today - firstJan) / 86400000 + firstJan.getDay() + 1) / 7
+        );
+        document.getElementById("weekInput").value = `${yyyy}-W${(
+          "0" + weekNum
+        ).slice(-2)}`;
+        setWeekRange();
+      };
+    </script>
+  </body>
+</html>
